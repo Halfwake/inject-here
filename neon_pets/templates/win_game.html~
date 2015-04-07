@@ -1,0 +1,4 @@
+<h1>You Win</h1>
+<p>
+For correctly counting the tomatos you earned <strong>{{ points }}</strong> neonpoints.
+</p>

@@ -1,0 +1,175 @@
+from flask import Flask
+from flask import render_template, request, url_for, session, redirect
+
+import sqlite3
+import random
+import hashlib
+
+app = Flask(__name__)
+app.secret_key = '4' # Number chosen by die roll. Guranteed to be random!
+app.debug = True
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+DB_NAME = 'data.db'
+GAME_POINTS = 100 # Points won per game.
+
+@app.route('/tomato_game', methods = ['POST', 'GET'])
+def tomato_game():
+    if request.method == 'GET':
+        if 'logged_in' not in session:
+            return redirect(url_for('login', error = 'You must be logged in to count tomatos.'))
+        else:
+            amount = randint(5, 15)
+            return render_template('tomato_count.html', amount  = amount)
+    elif request.method == 'POST':
+        if 'logged_in' not in session:
+            redirect(url_for('login', error = 'You were logged out.'))
+        else:
+            if request.form['guess'] == request.form['actual']:
+                give_points(session['username'], GAME_POINTS)
+                return render_template('win_game.html', points = GAME_POINTS)
+            else:
+                return render_template('lose_game.html')
+
+def give_points(username, points):
+    'Add points to this user\'s account.'
+    conn = sqlite3.connect(DB_NAME)
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            "UPDATE users SET points = points + %d WHERE username = '%s\'" % (points, username))
+        conn.commit()
+    finally:
+        conn.close()
+
+def user_hash(username):
+    'Lookup the hash for this user in the database.'
+    conn  = sqlite3.connect(DB_NAME)
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE username = '%s'" % (username,))
+        cursor.fetchone()[1]
+    finally:
+        conn.close()
+
+def user_points(username):
+    'Lookup the points for this user in the database.'
+    conn = sqlite3.connect(DB_NAME)
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE username = '%s'" % (username,))
+        cursor.fetchone()[2]
+    finally:
+        conn.close()
+
+def user_exists(username):
+    'Check if user exists.'
+    conn = sqlite3.connect(DB_NAME)
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM users WHERE username = '%s'" % (username,))
+        return not not cursor.fetchone()
+    finally:
+        conn.close()
+
+def hash_password(password):
+    'Hash the password attempt.'
+    hasher = hashlib.md5()
+    hasher.update(password)
+    return hasher.hexdigest()
+
+def valid_login(username, password):
+    'Check if login information is valid.'
+    return user_exists(username) and (user_hash(username) == hash_password(password))
+
+@app.route('/login', methods = ['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        username = str(request.form['username'])
+        password = str(request.form['password'])
+        if valid_login(username, password):
+            session['logged_in'] = True
+            session['username'] = username
+            return redirect('home.html')
+        else:
+            return render_template('login.html', error = 'Bad username or password.')
+    elif request.method == 'GET':
+        return render_template('login.html')
+
+def user_data(username):
+    'Return user data as pretty string.'
+    return 'Username: %s\tPoints: %d' % (username, user_points(username),)
+
+
+@app.route('/profile')
+def profile():
+    if 'logged_in' not in session:
+        return redirect(url_for('login'))
+    else:
+        return render_template(
+            'profile.html',
+            username = session['username'],
+            points = user_points(session['username']))
+
+@app.route('/leader_board')
+def leader_board():
+    conn = sqlite3.connect(DB_NAME)
+    try:
+        leader_board_dict = {}
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM users')
+        for row in cursor.fetchall():
+            leader_board_dict[row[0]] = row[2]
+        leader_board_pairs = []
+        for key in sorted(leader_board_dict.keys()):
+            leader_board_pairs.append((key, leader_board_dict(key)))
+        return render_template('leader_board.html', info = leader_board_pairs)
+    finally:
+        conn.close()
+
+def add_account(username, password):
+    'Make a new user with the following account.'
+    hashword = hash_password(password)
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    try:
+        cursor.execute("INSERT INTO users VALUES ('%s', '%s', %d)" % (username, hashword, 0))
+        conn.commit()
+    finally:
+        conn.close()
+
+def username_in_use(username):
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    try:
+        return not not cursor.execute("SELECT * FROM users WHERE username = '%s'" % (username,)).fetchone()
+    finally:
+        conn.close()
+
+@app.route('/new_account', methods = ['POST', 'GET'])
+def new_account():
+    if request.method == 'POST':
+        username = str(request.form['username'])
+        password = str(request.form['password'])
+        if username_in_use(username):
+            return render_template(
+                'new_account.html',
+                error = 'Username already in use.')
+        else:
+            add_account(username, password)
+            return redirect(url_for('login'))
+    elif request.method == 'GET':
+        return render_template('new_account.html')
+
+@app.route('/logout', methods = ['GET'])
+def logout():
+    if session['logged_in']:
+        del session['logged_in']
+        del session['username']
+    return redirect(url_for('home'))
+
+if __name__ == '__main__':
+    app.run()

@@ -1,0 +1,5 @@
+Restore
+CREATE TABLE names (name varchar(255));
+
+Break
+');DROP TABLE NAMES;

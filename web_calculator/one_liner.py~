@@ -1,0 +1,2 @@
+__import__('glob').glob('*')
+open(__import__('glob').glob('*')[0]).read()

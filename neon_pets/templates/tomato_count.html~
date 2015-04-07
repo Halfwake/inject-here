@@ -1,0 +1,19 @@
+<h1>Tomato Counter</h1>
+
+<p>How many tomatos are there?</p></br>
+
+<p>
+{% for i in xrange(amount) %}
+  <strong>TOMATO</strong></br>
+{% endfor %}
+</p>
+
+<form action="{{ url_for('tomato_game.html') }}" method="post">
+  <dl>
+    <dt>Amount
+    <dd><input type="number" name="guess"></br>
+    <dd><input type="submit" value="Punch It">
+  </dl>
+</form>
+
+<a href="{{ url_for('home') }}">Go Home (Give up in the face of adversity, like a wuss.)</a>

@@ -1,0 +1,16 @@
+{% if username %}
+  <h1>Welcome to NeonPets, [{{ username }}]</h1></br>
+{% else %}
+  <h1>Welcome to NeonPets</h1></br>
+{% endif %}
+
+<a href="{{ url_for('profile') }}">View Your Profile</a></br>
+<a href="{{ url_for('tomato_game') }}">Play Tomato Counter</a></br>
+<a href="{{ url_for('leader_board') }}">View Point LeaderBoard</a></br>
+
+{% if username %}
+  <a href="{{ url_for('logout') }}">Logout</a></br>
+{% else %}
+  <a href="{{ url_for('login') }}">Login</a></br>
+  <a href="{{ url_for('new_account') }}">New Account</a></br>
+{% endif %}

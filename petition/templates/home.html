@@ -1,0 +1,15 @@
+<h1>SIGN THE PETITION TO BRING BACK FUTURAMA/FIREFLY</h1>
+
+<form action="{{ url_for('petition') }}" method="post">
+  <dl>
+    <dt>Name:
+    <dd><input type="text" name="name">
+  </dl>
+</form>
+
+<h3>Signatures so Far (Total: {{amount}})</h3>
+{% for name in names %}
+  {{ name }}
+  </br>
+{% endfor %}
+

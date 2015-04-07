@@ -1,0 +1,9 @@
+<h1>High Scores</h1>
+{% if not info %}
+<p>No Scores Posted Yet :(</p>
+{% endif %}
+{% for username, points in info %}
+<p>Username: {{ username }}, Points: {{ points }}</p>
+</br>
+{% endfor %}
+<a href="{{ url_for('home') }}">Go Home</a>

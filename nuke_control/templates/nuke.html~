@@ -1,0 +1,6 @@
+<h1>Nuke Launcher</h1>
+<form action="{{ url_for('math') }}" method="post">
+  <dl>
+    <dd><input type="submit" name="Stop Communism">
+  </dl>
+</form>

@@ -1,0 +1,29 @@
+from flask import Flask
+from flask import render_template, url_for
+
+import sqlite3
+
+DB_NAME = 'data.db'
+
+app = Flask(__name__)
+#app.debug = True
+
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/info/<table>')
+def info(table):
+    conn = sqlite3.connect(DB_NAME)
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM %s" % (table,))
+        info_rows = cursor.fetchall()
+        info_items = [row[0] for row in info_rows]
+        return render_template('info.html', info_items = info_items)
+    finally:
+        conn.close()
+    
+
+if __name__ == '__main__':
+    app.run()
