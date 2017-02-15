@@ -1,6 +1,6 @@
 Example websites with OWASP vulnerabilities.
 
-* Nuke Launched
+* Nuke Launch
 
 Oh no, your dad's the president and he won't let you start a nuclear war! Time to hack the planet.
 
@@ -16,6 +16,6 @@ But if you check the source code, you'll see that they have a [Missing Function 
 
 [[./images/nuke_3.PNG]]
 
-[[./images/nukes_4.PNG]]
+[[./images/nuke_4.PNG]]
 
 Excellent.
