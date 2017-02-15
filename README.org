@@ -1,0 +1,21 @@
+Example websites with OWASP vulnerabilities.
+
+* Nuke Launched
+
+Oh no, your dad's the president and he won't let you start a nuclear war! Time to hack the planet.
+
+[[./images/nuke_1.PNG]]
+
+[Password Guessing]
+
+[[./images/nuke_2.PNG]]
+
+Well darn.
+
+But if you check the source code, you'll see that they have a [Missing Function Level Access Control] exploit. Just hop on down to the control URL and bypass the login screen.
+
+[[./images/nuke_3.PNG]]
+
+[[./images/nukes_4.PNG]]
+
+Excellent.
