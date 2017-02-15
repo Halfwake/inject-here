@@ -33,3 +33,19 @@ It seems fine, but we can find a hidden link by looking at the source code or ju
 Oh, it caused an error and debug mode is on. Now we have access to a python interpretter that runs on the server.
 
 [[./images/misconfig_3.PNG]]
+
+* Injection
+
+Look the next Wolfram Alpha!
+
+[[./images/calculator_1.PNG]]
+
+[[./images/calculator_2.PNG]]
+
+I wonder how it works?
+
+[[./images/calculator_3.PNG]]
+
+[[./images/calculator_4.PNG]]
+
+How elegant!
