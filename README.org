@@ -19,3 +19,17 @@ But if you check the source code, you'll see that they have a [Missing Function 
 [[./images/nuke_4.PNG]]
 
 Excellent.
+
+* Misconfigured Website
+
+Here's another website.
+
+[[./images/misconfig_1]]
+
+It seems fine, but we can find a hidden link by looking at the source code or just futzing around a lot.
+
+[[./images/miconfig_2]]
+
+Oh, it caused an error and debug mode is on. Now we have access to a python interpretter that runs on the server.
+
+[[./images/misconfig_3]]
