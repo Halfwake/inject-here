@@ -42,7 +42,7 @@ Look the next Wolfram Alpha!
 
 [[./images/calculator_2.PNG]]
 
-I wonder how it works?
+I wonder how it works!
 
 [[./images/calculator_3.PNG]]
 
