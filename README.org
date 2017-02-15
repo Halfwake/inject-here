@@ -24,12 +24,12 @@ Excellent.
 
 Here's another website.
 
-[[./images/misconfig_1]]
+[[./images/misconfig_1.PNG]]
 
 It seems fine, but we can find a hidden link by looking at the source code or just futzing around a lot.
 
-[[./images/miconfig_2]]
+[[./images/miconfig_2.PNG]]
 
 Oh, it caused an error and debug mode is on. Now we have access to a python interpretter that runs on the server.
 
-[[./images/misconfig_3]]
+[[./images/misconfig_3.PNG]]
