@@ -28,7 +28,7 @@ Here's another website.
 
 It seems fine, but we can find a hidden link by looking at the source code or just futzing around a lot.
 
-[[./images/miconfig_2.PNG]]
+[[./images/misconfig_2.PNG]]
 
 Oh, it caused an error and debug mode is on. Now we have access to a python interpretter that runs on the server.
 
